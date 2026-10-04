@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - Gift Shop</title>
+    <link rel="stylesheet" href="~/Content/css/style.css">
+</head>
+<body>
+    <header>
+        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
+        <nav>
+            <a href="~/Home/Index">Trang chủ</a>
+            <a href="~/Product/SanPham">Sản phẩm</a>
+            <a href="~/Home/Combo">Combo</a>
+            <a href="~/Home/LienHe">Liên hệ</a>
+            <a href="~/Account/DangNhap">Đăng nhập</a>
+            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Thanh toán</h1>
+        <p>Tổng tiền đơn hàng: <strong id="cart-total">0đ</strong></p>
+        <form id="checkout" action="#" method="post">
+            <fieldset>
+                <legend>Thông tin giao hàng</legend>
+                <label for="hoten">Họ và tên</label>
+                <input type="text" id="hoten" name="hoten" required>
+                <label for="sdt">Số điện thoại</label>
+                <input type="tel" id="sdt" name="sdt" pattern="[0-9]{10}" title="Nhập 10 chữ số" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+                <label for="diachi">Địa chỉ</label>
+                <textarea id="diachi" name="diachi" rows="3" required></textarea>
+                <label for="ptttt">Phương thức thanh toán</label>
+                <select id="ptttt" name="ptttt">
+                    <option value="cod">Thanh toán khi nhận hàng</option>
+                    <option value="ck">Chuyển khoản</option>
+                </select>
+                <button type="submit">Đặt hàng</button>
+            </fieldset>
+        </form>
+    </main>
+    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
+    <script src="~/js/main.js"></script>
+</body>
+</html>

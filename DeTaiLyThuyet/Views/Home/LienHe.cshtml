@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên hệ - Gift Shop</title>
+    <link rel="stylesheet" href="~/Content/css/style.css">
+</head>
+<body>
+    <header>
+        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
+        <nav>
+            <a href="~/Home/Index">Trang chủ</a>
+            <a href="~/Product/SanPham">Sản phẩm</a>
+            <a href="~/Home/Combo">Combo</a>
+            <a href="~/Home/LienHe">Liên hệ</a>
+            <a href="~/Account/DangNhap">Đăng nhập</a>
+            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Liên hệ</h1>
+        <p>📍 Quận 4, TP. Hồ Chí Minh<br>📞 0900 000 000<br>✉️ giftshop@example.com</p>
+        <form action="#" method="post" onsubmit="alert('Cảm ơn bạn đã liên hệ!');return false">
+            <fieldset>
+                <legend>Gửi tin nhắn cho shop</legend>
+                <label for="ten">Họ tên</label>
+                <input type="text" id="ten" required>
+                <label for="mail">Email</label>
+                <input type="email" id="mail" required>
+                <label for="nd">Nội dung</label>
+                <textarea id="nd" rows="4" required></textarea>
+                <button type="submit">Gửi</button>
+            </fieldset>
+        </form>
+    </main>
+    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
+    <script src="~/js/main.js"></script>
+</body>
+</html>

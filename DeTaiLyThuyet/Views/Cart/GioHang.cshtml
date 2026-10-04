@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - Gift Shop</title>
+    <link rel="stylesheet" href="~/Content/css/style.css">
+</head>
+<body>
+    <header>
+        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
+        <nav>
+            <a href="~/Home/Index">Trang chủ</a>
+            <a href="~/Product/SanPham">Sản phẩm</a>
+            <a href="~/Home/Combo">Combo</a>
+            <a href="~/Home/LienHe">Liên hệ</a>
+            <a href="~/Account/DangNhap">Đăng nhập</a>
+            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Giỏ hàng của bạn</h1>
+        <table>
+            <thead><tr><th>Sản phẩm</th><th>Đơn giá</th><th>Số lượng</th><th>Thành tiền</th><th>Xóa</th></tr></thead>
+            <tbody id="cart-body"></tbody>
+            <tfoot>
+                <tr><td colspan="3">Tạm tính</td><td colspan="2" id="cart-sub">0đ</td></tr>
+                <tr><td colspan="3">Giảm giá</td><td colspan="2" id="cart-discount">-0đ</td></tr>
+                <tr><td colspan="3">Tổng cộng</td><td colspan="2"><strong id="cart-total">0đ</strong></td></tr>
+            </tfoot>
+        </table>
+        <div class="voucher">
+            <h2>🎟️ Voucher của bạn</h2>
+            <div id="vc-list" class="vc-list"></div>
+            <label for="vc-input">Hoặc nhập mã:</label>
+            <input type="text" id="vc-input" placeholder="VD: GIAM10">
+            <button type="button" onclick="applyVoucher()">Áp dụng</button>
+            <button type="button" onclick="removeVoucher()">Bỏ mã</button>
+            <p id="vc-msg"></p>
+        </div>
+        <a class="btn" href="~/Product/SanPham">Tiếp tục mua</a>
+        <a class="btn" href="~/Order/ThanhToan">Thanh toán</a>
+    </main>
+    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
+    <script src="~/js/main.js"></script>
+</body>
+</html>
