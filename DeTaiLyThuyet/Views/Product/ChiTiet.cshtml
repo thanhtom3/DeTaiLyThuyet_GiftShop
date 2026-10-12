@@ -5,28 +5,54 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết sản phẩm - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết - Gift Shop</title>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Chi tiết sản phẩm</h1>
-        <section id="detail"></section>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+    <div id="header"></div>
+
+    <div class="vung">
+        <div id="chiTiet"></div>
+        <h2 class="tieude">Sản phẩm cùng loại</h2>
+        <div class="luoi" id="lienQuan"></div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script>
+        var ma = layThamSo("ma");
+        var s = timSP(ma);
+
+        if (!s) {
+            document.getElementById("chiTiet").innerHTML = "<p>Không tìm thấy sản phẩm.</p>";
+        } else {
+            document.title = s.ten + " - Gift Shop";
+            document.getElementById("chiTiet").innerHTML =
+                '<div class="chitiet">' +
+                '<img src="@Url.Content("~/Content/images/")' + s.hinh + '" alt="' + s.ten + '" />' +
+                '<div class="chitiet-tt">' +
+                '<h1>' + s.ten + '</h1>' +
+                '<div class="gia-lon">' + dinhDang(s.gia) + '</div>' +
+                '<p>' + s.mota + '</p>' +
+                '<input type="number" id="soLuong" class="o-sl" value="1" min="1" />' +
+                '<button class="nut" onclick="themTuChiTiet()">Thêm vào giỏ</button>' +
+                '</div></div>';
+
+            var lq = [];
+            for (var i = 0; i < SAN_PHAM.length; i++) {
+                if (SAN_PHAM[i].loai == s.loai && SAN_PHAM[i].ma != s.ma) lq.push(SAN_PHAM[i]);
+            }
+            veSP(lq, "lienQuan");
+        }
+
+        function themTuChiTiet() {
+            var sl = parseInt(document.getElementById("soLuong").value);
+            if (isNaN(sl) || sl < 1) sl = 1;
+            themGio(s.ma, sl);
+        }
+    </script>
 </body>
 </html>

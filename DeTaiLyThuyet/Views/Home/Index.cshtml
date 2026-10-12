@@ -5,48 +5,57 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gift Shop</title>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <section class="banner">
-            <h1>Văn phòng phẩm &amp; Quà lưu niệm</h1>
-            <p>Mua lẻ hoặc theo combo, tiết kiệm đến 30%</p>
-            <a class="btn" href="~/Home/Combo">Xem combo ngay</a>
-        </section>
-        <section>
-            <h2>Danh mục sản phẩm</h2>
-            <ul class="cats">
-                <li><a href="~/Product/SanPham?loai=so-tay">📒 Sổ tay</a></li>
-                <li><a href="~/Product/SanPham?loai=but">🖊️ Bút</a></li>
-                <li><a href="~/Product/SanPham?loai=dung-cu">📏 Dụng cụ học tập</a></li>
-                <li><a href="~/Product/SanPham?loai=qua-luu-niem">🎀 Quà lưu niệm</a></li>
-            </ul>
-        </section>
-        <section>
-            <h2>Sản phẩm nổi bật</h2>
-            <div class="grid" id="featured"></div>
-        </section>
-        <section>
-            <h2>Combo ưu đãi</h2>
-            <div class="grid" id="combos"></div>
-        </section>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+    <div id="header"></div>
+
+    <div class="banner">
+        <div class="slide hien" style="background:#fde4e6;">
+            <h1>Back to School</h1><p>Sổ tay, bút, dụng cụ học tập giá tốt</p>
+        </div>
+        <div class="slide" style="background:#e4eefd;">
+            <h1>Combo Văn phòng</h1><p>Mua theo combo tiết kiệm hơn</p>
+        </div>
+        <div class="slide" style="background:#e8f7e4;">
+            <h1>Quà lưu niệm</h1><p>Móc khóa, cốc sứ, hộp quà mini</p>
+        </div>
+        <div class="cham">
+            <span class="chamtron on"></span>
+            <span class="chamtron"></span>
+            <span class="chamtron"></span>
+        </div>
+    </div>
+
+    <div class="danhmuc">
+        <a class="dm" href="~/Product/SanPham?loai=so"><div class="dm-icon" style="background:#f4516c;">&#128211;</div>Sổ tay</a>
+        <a class="dm" href="~/Product/SanPham?loai=but"><div class="dm-icon" style="background:#3a7bd5;">&#9999;</div>Bút</a>
+        <a class="dm" href="~/Product/SanPham?loai=dungcu"><div class="dm-icon" style="background:#f5a623;">&#128207;</div>Dụng cụ</a>
+        <a class="dm" href="~/Product/SanPham?loai=qua"><div class="dm-icon" style="background:#e8505b;">&#127873;</div>Quà lưu niệm</a>
+        <a class="dm" href="~/Home/Combo"><div class="dm-icon" style="background:#2fb67c;">&#128717;</div>Combo</a>
+        <a class="dm" href="~/Product/SanPham"><div class="dm-icon" style="background:#7b61ff;">&#9776;</div>Tất cả</a>
+    </div>
+
+    <div class="flash">
+        <span class="flash-ten">FLASH SALE</span>
+        Kết thúc trong
+        <span class="gio" id="gio">00</span>:<span class="gio" id="phut">00</span>:<span class="gio" id="giay">00</span>
+    </div>
+
+    <div class="vung-sp">
+        <h2 class="tieude">Sản phẩm lẻ</h2>
+        <div class="luoi" id="ds-le"></div>
+
+        <h2 class="tieude">Combo</h2>
+        <div class="luoi" id="ds-combo"></div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script src="~/Scripts/js/trang-chu.js"></script>
 </body>
 </html>

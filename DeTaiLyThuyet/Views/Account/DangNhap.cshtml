@@ -5,53 +5,83 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng nhập - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Đăng nhập / Đăng ký</h1>
-        <div class="two">
-            <form id="login-form" action="#">
-                <fieldset>
-                    <legend>Đăng nhập</legend>
-                    <label for="dn-mail">Email</label>
-                    <input type="email" id="dn-mail" required>
-                    <label for="dn-mk">Mật khẩu</label>
-                    <input type="password" id="dn-mk" required>
-                    <button type="submit">Đăng nhập</button>
-                    <p class="err" id="dn-msg"></p>
-                </fieldset>
-            </form>
-            <form id="register-form" action="#">
-                <fieldset>
-                    <legend>Đăng ký</legend>
-                    <label for="dk-ten">Họ tên</label>
-                    <input type="text" id="dk-ten" required>
-                    <label for="dk-mail">Email</label>
-                    <input type="email" id="dk-mail" required>
-                    <label for="dk-mk">Mật khẩu (tối thiểu 6 ký tự)</label>
-                    <input type="password" id="dk-mk" minlength="6" required>
-                    <button type="submit">Đăng ký</button>
-                    <p class="err" id="dk-msg"></p>
-                </fieldset>
-            </form>
+    <div id="header"></div>
+
+    <div class="vung">
+        <div class="hop" id="formDangNhap">
+            <h2>Đăng nhập</h2>
+            <label>Email</label>
+            <input type="text" id="dnEmail" />
+            <label>Mật khẩu</label>
+            <input type="password" id="dnMatKhau" />
+            <button class="nut" onclick="xuLyDangNhap()">Đăng nhập</button>
+            <p>Chưa có tài khoản? <a href="#" onclick="chuyenForm(false);return false;"><b>Đăng ký</b></a></p>
         </div>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+
+        <div class="hop" id="formDangKy" style="display:none;">
+            <h2>Đăng ký</h2>
+            <label>Họ tên</label>
+            <input type="text" id="dkTen" />
+            <label>Email</label>
+            <input type="text" id="dkEmail" />
+            <label>Mật khẩu</label>
+            <input type="password" id="dkMatKhau" />
+            <label>Nhập lại mật khẩu</label>
+            <input type="password" id="dkNhapLai" />
+            <button class="nut" onclick="xuLyDangKy()">Đăng ký</button>
+            <p>Đã có tài khoản? <a href="#" onclick="chuyenForm(true);return false;"><b>Đăng nhập</b></a></p>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script>
+        function chuyenForm(hienDangNhap) {
+            document.getElementById("formDangNhap").style.display = hienDangNhap ? "block" : "none";
+            document.getElementById("formDangKy").style.display = hienDangNhap ? "none" : "block";
+        }
+
+        function xuLyDangKy() {
+            var ten = document.getElementById("dkTen").value.trim();
+            var email = document.getElementById("dkEmail").value.trim().toLowerCase();
+            var mk = document.getElementById("dkMatKhau").value;
+            var nl = document.getElementById("dkNhapLai").value;
+
+            if (ten == "" || email == "" || mk == "") { alert("Vui lòng nhập đủ thông tin"); return; }
+            if (email.indexOf(" ") < 0) { alert("Email không hợp lệ"); return; }
+            if (mk.length < 6) { alert("Mật khẩu phải từ 6 ký tự"); return; }
+            if (mk != nl) { alert("Mật khẩu nhập lại không khớp"); return; }
+
+            var ds = doc("nguoiDung", []);
+            for (var i = 0; i < ds.length; i++) {
+                if (ds[i].email == email) { alert("Email này đã được đăng ký"); return; }
+            }
+            ds.push({ ten: ten, email: email, matKhau: mk });
+            ghi("nguoiDung", ds);
+            alert("Đăng ký thành công, hãy đăng nhập");
+            chuyenForm(true);
+        }
+
+        function xuLyDangNhap() {
+            var email = document.getElementById("dnEmail").value.trim().toLowerCase();
+            var mk = document.getElementById("dnMatKhau").value;
+            var ds = doc("nguoiDung", []);
+            for (var i = 0; i < ds.length; i++) {
+                if (ds[i].email == email && ds[i].matKhau == mk) {
+                    ghi("dangNhap", email);
+                    location.href = "@Url.Action("Index", "Home")";
+                    return;
+                }
+            }
+            alert("Sai email hoặc mật khẩu");
+        }
+    </script>
 </body>
 </html>

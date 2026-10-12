@@ -5,40 +5,49 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Liên hệ - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Liên hệ</h1>
-        <p>📍 Quận 4, TP. Hồ Chí Minh<br>📞 0900 000 000<br>✉️ giftshop@example.com</p>
-        <form action="#" method="post" onsubmit="alert('Cảm ơn bạn đã liên hệ!');return false">
-            <fieldset>
-                <legend>Gửi tin nhắn cho shop</legend>
-                <label for="ten">Họ tên</label>
-                <input type="text" id="ten" required>
-                <label for="mail">Email</label>
-                <input type="email" id="mail" required>
-                <label for="nd">Nội dung</label>
-                <textarea id="nd" rows="4" required></textarea>
-                <button type="submit">Gửi</button>
-            </fieldset>
-        </form>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+    <div id="header"></div>
+
+    <div class="vung">
+        <h2 class="tieude">Liên hệ</h2>
+        <div class="hop">
+            <p>Địa chỉ: Thành phố Hồ Chí Minh<br>Điện thoại: 0123 456 789<br>Email: giftshop@example.com</p>
+        </div>
+
+        <div class="hop">
+            <h2>Gửi tin nhắn</h2>
+            <label>Họ tên</label>
+            <input type="text" id="lhTen" />
+            <label>Email</label>
+            <input type="text" id="lhEmail" />
+            <label>Nội dung</label>
+            <textarea id="lhNoiDung" rows="4"></textarea>
+            <button class="nut" onclick="guiLienHe()">Gửi</button>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script>
+        function guiLienHe() {
+            var ten = document.getElementById("lhTen").value.trim();
+            var email = document.getElementById("lhEmail").value.trim();
+            var nd = document.getElementById("lhNoiDung").value.trim();
+            if (ten == "" || email == "" || nd == "") { alert("Vui lòng nhập đủ thông tin"); return; }
+            var ds = doc("lienHe", []);
+            ds.push({ ten: ten, email: email, noiDung: nd });
+            ghi("lienHe", ds);
+            alert("Đã gửi, cảm ơn bạn!");
+            document.getElementById("lhTen").value = "";
+            document.getElementById("lhEmail").value = "";
+            document.getElementById("lhNoiDung").value = "";
+        }
+    </script>
 </body>
 </html>

@@ -5,47 +5,88 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Thanh toán - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Thanh toán</h1>
-        <p>Tổng tiền đơn hàng: <strong id="cart-total">0đ</strong></p>
-        <form id="checkout" action="#" method="post">
-            <fieldset>
-                <legend>Thông tin giao hàng</legend>
-                <label for="hoten">Họ và tên</label>
-                <input type="text" id="hoten" name="hoten" required>
-                <label for="sdt">Số điện thoại</label>
-                <input type="tel" id="sdt" name="sdt" pattern="[0-9]{10}" title="Nhập 10 chữ số" required>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
-                <label for="diachi">Địa chỉ</label>
-                <textarea id="diachi" name="diachi" rows="3" required></textarea>
-                <label for="ptttt">Phương thức thanh toán</label>
-                <select id="ptttt" name="ptttt">
-                    <option value="cod">Thanh toán khi nhận hàng</option>
-                    <option value="ck">Chuyển khoản</option>
-                </select>
-                <button type="submit">Đặt hàng</button>
-            </fieldset>
-        </form>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+    <div id="header"></div>
+
+    <div class="vung">
+        <h2 class="tieude">Thanh toán</h2>
+        <div id="tomTat"></div>
+
+        <div class="hop">
+            <h2>Thông tin giao hàng</h2>
+            <label>Họ tên</label>
+            <input type="text" id="ten" />
+            <label>Số điện thoại</label>
+            <input type="text" id="sdt" />
+            <label>Địa chỉ</label>
+            <input type="text" id="diaChi" />
+            <label>Phương thức thanh toán</label>
+            <select id="ptt">
+                <option>Thanh toán khi nhận hàng</option>
+                <option>Chuyển khoản ngân hàng</option>
+            </select>
+            <button class="nut" onclick="datHang()">Đặt hàng</button>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script>
+        if (!nguoiDangNhap()) {
+            alert("Vui lòng đăng nhập để thanh toán");
+            location.href = "@Url.Action("DangNhap", "Account")";
+        }
+
+        var g = layGio();
+        var tong = 0;
+        var h = '<table class="bang"><tr><th>Sản phẩm</th><th>Số lượng</th><th>Thành tiền</th></tr>';
+        for (var i = 0; i < g.length; i++) {
+            var s = timSP(g[i].ma);
+            tong += s.gia * g[i].sl;
+            h += '<tr><td>' + s.ten + '</td><td>' + g[i].sl + '</td><td>' + dinhDang(s.gia * g[i].sl) + '</td></tr>';
+        }
+        h += '</table><div class="tong">Tổng cộng: ' + dinhDang(tong) + '</div>';
+        if (g.length == 0) h = '<p>Giỏ hàng trống.</p>';
+        document.getElementById("tomTat").innerHTML = h;
+
+        function datHang() {
+            var u = nguoiDangNhap();
+            var gio = layGio();
+            if (gio.length == 0) { alert("Giỏ hàng trống"); return; }
+
+            var ten = document.getElementById("ten").value.trim();
+            var sdt = document.getElementById("sdt").value.trim();
+            var dc = document.getElementById("diaChi").value.trim();
+            var ptt = document.getElementById("ptt").value;
+            if (ten == "" || sdt == "" || dc == "") { alert("Vui lòng nhập đủ thông tin"); return; }
+
+            var ct = [];
+            var tongTien = 0;
+            for (var i = 0; i < gio.length; i++) {
+                var sp = timSP(gio[i].ma);
+                ct.push({ ten: sp.ten, gia: sp.gia, sl: gio[i].sl });
+                tongTien += sp.gia * gio[i].sl;
+            }
+
+            var ds = doc("donHang", []);
+            ds.push({
+                ma: "DH" + (ds.length + 1001),
+                email: u.email,
+                ngay: new Date().toLocaleString("vi-VN"),
+                ten: ten, sdt: sdt, diaChi: dc, thanhToan: ptt,
+                chiTiet: ct, tong: tongTien
+            });
+            ghi("donHang", ds);
+            localStorage.removeItem("gioHang");
+            alert("Đặt hàng thành công!");
+            location.href = "@Url.Action("DonHang", "Order")";
+        }
+    </script>
 </body>
 </html>

@@ -5,28 +5,46 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đơn hàng của tôi - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đơn hàng - Gift Shop</title>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Đơn hàng của tôi</h1>
-        <div id="orders"></div>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+    <div id="header"></div>
+
+    <div class="vung">
+        <h2 class="tieude">Đơn hàng của tôi</h2>
+        <div id="ds"></div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script>
+        var u = nguoiDangNhap();
+        if (!u) {
+            document.getElementById("ds").innerHTML =
+                '<p>Vui lòng đăng nhập để xem đơn hàng.</p><a class="nut" href="@Url.Action("DangNhap", "Account")">Đăng nhập</a>';
+        } else {
+            var tatCa = doc("donHang", []);
+            var h = "";
+            for (var i = tatCa.length - 1; i >= 0; i--) {
+                var d = tatCa[i];
+                if (d.email != u.email) continue;
+                h += '<div class="donhang"><h3>Đơn ' + d.ma + '</h3>' +
+                    '<p>Ngày đặt: ' + d.ngay + '<br>Người nhận: ' + d.ten + ' - ' + d.sdt +
+                    '<br>Địa chỉ: ' + d.diaChi + '<br>Thanh toán: ' + d.thanhToan + '</p>' +
+                    '<table class="bang"><tr><th>Sản phẩm</th><th>Đơn giá</th><th>Số lượng</th></tr>';
+                for (var j = 0; j < d.chiTiet.length; j++) {
+                    h += '<tr><td>' + d.chiTiet[j].ten + '</td><td>' + dinhDang(d.chiTiet[j].gia) +
+                        '</td><td>' + d.chiTiet[j].sl + '</td></tr>';
+                }
+                h += '</table><div class="tong">Tổng: ' + dinhDang(d.tong) + '</div></div>';
+            }
+            if (h == "") h = "<p>Bạn chưa có đơn hàng nào.</p>";
+            document.getElementById("ds").innerHTML = h;
+        }
+    </script>
 </body>
 </html>

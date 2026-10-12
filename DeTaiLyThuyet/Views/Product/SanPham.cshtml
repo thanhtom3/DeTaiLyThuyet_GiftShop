@@ -5,40 +5,52 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sản phẩm - Gift Shop</title>
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <a class="logo" href="~/Home/Index">🎁 Gift Shop</a>
-        <nav>
-            <a href="~/Home/Index">Trang chủ</a>
-            <a href="~/Product/SanPham">Sản phẩm</a>
-            <a href="~/Home/Combo">Combo</a>
-            <a href="~/Home/LienHe">Liên hệ</a>
-            <a href="~/Account/DangNhap">Đăng nhập</a>
-            <a href="~/Cart/GioHang">Giỏ hàng (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Sản phẩm</h1>
-        <form class="filter" onsubmit="return false">
-            <label for="loai">Danh mục:</label>
-            <select id="loai">
-                <option value="">Tất cả</option>
-                <option value="so-tay">Sổ tay</option>
-                <option value="but">Bút</option>
-                <option value="dung-cu">Dụng cụ học tập</option>
-                <option value="qua-luu-niem">Quà lưu niệm</option>
-            </select>
-            <label for="q">Tìm kiếm:</label>
-            <input type="search" id="q" placeholder="Tìm sổ tay, bút...">
-        </form>
-        <div class="grid" id="list"></div>
-    </main>
-    <footer><p>&copy; 2026 Gift Shop | Hotline: 0900 000 000 | Quận 4, TP.HCM</p></footer>
-    <script src="~/js/main.js"></script>
+    <div id="header"></div>
+
+    <div class="vung">
+        <h2 class="tieude" id="tieuDe">Tất cả sản phẩm</h2>
+        <div class="tab" id="tab"></div>
+        <div class="luoi" id="ds"></div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="~/Scripts/js/main.js"></script>
+    <script>
+        var loai = layThamSo("loai");
+        var q = layThamSo("q");
+
+        var loaiTab = [
+            { ma: "", ten: "Tất cả" },
+            { ma: "so", ten: "Sổ tay" },
+            { ma: "but", ten: "Bút" },
+            { ma: "dungcu", ten: "Dụng cụ" },
+            { ma: "qua", ten: "Quà lưu niệm" }
+        ];
+        var t = "";
+        for (var i = 0; i < loaiTab.length; i++) {
+            var on = ((loai || "") == loaiTab[i].ma && !q) ? ' class="on"' : '';
+            var link = loaiTab[i].ma == "" ? "@Url.Content("~/Product/SanPham")" : "@Url.Content("~/Product/SanPham")?loai=" + loaiTab[i].ma;
+            t += '<a href="' + link + '"' + on + '>' + loaiTab[i].ten + '</a>';
+        }
+        document.getElementById("tab").innerHTML = t;
+
+        var kq = [];
+        for (var j = 0; j < SAN_PHAM.length; j++) {
+            var s = SAN_PHAM[j];
+            if (s.loai == "combo") continue;
+            if (loai && s.loai != loai) continue;
+            if (q && s.ten.toLowerCase().indexOf(q.toLowerCase()) < 0) continue;
+            kq.push(s);
+        }
+        if (q) document.getElementById("tieuDe").innerText = 'Kết quả tìm: "' + q + '"';
+        veSP(kq, "ds");
+    </script>
 </body>
 </html>
