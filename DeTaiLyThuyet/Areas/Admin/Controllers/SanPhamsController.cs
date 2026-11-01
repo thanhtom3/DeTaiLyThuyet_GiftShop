@@ -55,36 +55,50 @@ namespace DeTaiLyThuyet.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(
-            [Bind(Include = "DanhMucID,TenSanPham,Gia,MoTa,SoLuongTon,DangBan")]
-            SanPham sanPham,
-            HttpPostedFileBase fileAnh)
+    [Bind(Include = "DanhMucID,TenSanPham,Gia,MoTa,SoLuongTon,DangBan")]
+    SanPham sanPham,
+    HttpPostedFileBase fileAnh)
         {
-            if (fileAnh != null && fileAnh.ContentLength > 0)
+            try
             {
-                string duongDanAnh = LuuAnh(fileAnh);
-
-                if (duongDanAnh == null)
+                if (fileAnh != null && fileAnh.ContentLength > 0)
                 {
-                    ModelState.AddModelError(
-                        "fileAnh",
-                        "Ảnh phải có định dạng JPG, JPEG, PNG hoặc GIF và không quá 5 MB.");
-                }
-                else
-                {
-                    sanPham.HinhAnh = duongDanAnh;
-                }
-            }
+                    string duongDanAnh = LuuAnh(fileAnh);
 
-            if (ModelState.IsValid)
-            {
+                    if (duongDanAnh == null)
+                    {
+                        ModelState.AddModelError(
+                            "fileAnh",
+                            "Ảnh không hợp lệ hoặc vượt quá 5 MB.");
+                    }
+                    else
+                    {
+                        sanPham.HinhAnh = duongDanAnh;
+                    }
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    NapDanhMuc(sanPham.DanhMucID);
+                    return View(sanPham);
+                }
+
                 db.SanPhams.Add(sanPham);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-            NapDanhMuc(sanPham.DanhMucID);
-            return View(sanPham);
+                ModelState.AddModelError(
+                    "",
+                    "Lỗi khi lưu sản phẩm: " + ex.GetBaseException().Message);
+
+                NapDanhMuc(sanPham.DanhMucID);
+                return View(sanPham);
+            }
         }
 
         // GET: Admin/SanPhams/Edit/5
@@ -217,10 +231,14 @@ namespace DeTaiLyThuyet.Areas.Admin.Controllers
             );
         }
 
-        // Lưu ảnh vào Content/Images/SanPham.
         private string LuuAnh(HttpPostedFileBase fileAnh)
         {
             const int kichThuocToiDa = 5 * 1024 * 1024;
+
+            if (fileAnh == null || fileAnh.ContentLength <= 0)
+            {
+                return null;
+            }
 
             if (fileAnh.ContentLength > kichThuocToiDa)
             {
@@ -243,7 +261,7 @@ namespace DeTaiLyThuyet.Areas.Admin.Controllers
                 return null;
             }
 
-            string thuMuc = Server.MapPath("~/Content/Images/SanPham");
+            string thuMuc = Server.MapPath("~/Content/images");
 
             if (!Directory.Exists(thuMuc))
             {
@@ -255,7 +273,7 @@ namespace DeTaiLyThuyet.Areas.Admin.Controllers
 
             fileAnh.SaveAs(duongDanDayDu);
 
-            return "/Content/Images/SanPham/" + tenFile;
+            return "/Content/images/" + tenFile;
         }
 
         protected override void Dispose(bool disposing)

@@ -4,7 +4,11 @@
     <div class="col-md-5">
         @if (!String.IsNullOrEmpty(Model.HinhAnh))
         {
-            <img src="@Url.Content(Model.HinhAnh)"
+            var duongDanAnh = Model.HinhAnh.StartsWith("/")
+                ? "~" + Model.HinhAnh
+                : "~/Content/images/" + Model.HinhAnh;
+
+            <img src="@Url.Content(duongDanAnh)"
                  alt="@Model.TenSanPham"
                  class="img-responsive"
                  style="max-width:100%; max-height:400px; object-fit:contain;" />
